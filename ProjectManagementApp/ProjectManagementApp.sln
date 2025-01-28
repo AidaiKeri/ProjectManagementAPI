@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectManagementAPI", "ProjectManagementAPI\ProjectManagementAPI.csproj", "{7715362D-32F5-4851-A154-058562B6663E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectManagementApp.UI", "ProjectManagementApp.UI\ProjectManagementApp.UI.csproj", "{5D3F94D3-9F71-4DCE-85AF-E937A851768B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7715362D-32F5-4851-A154-058562B6663E} = {7715362D-32F5-4851-A154-058562B6663E}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7715362D-32F5-4851-A154-058562B6663E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7715362D-32F5-4851-A154-058562B6663E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7715362D-32F5-4851-A154-058562B6663E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7715362D-32F5-4851-A154-058562B6663E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3F94D3-9F71-4DCE-85AF-E937A851768B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3F94D3-9F71-4DCE-85AF-E937A851768B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3F94D3-9F71-4DCE-85AF-E937A851768B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3F94D3-9F71-4DCE-85AF-E937A851768B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A577F5FF-5D17-42F5-8348-4164B3D0328A}
+	EndGlobalSection
+EndGlobal
