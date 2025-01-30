@@ -1,43 +1,36 @@
 ﻿<Window x:Class="ProjectManagementApp.UI.Views.AddProjectWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Add Project" Height="500" Width="400">
+        Title="Add Project" Height="400" Width="400">
     <Grid Margin="10">
         <TabControl>
-            <!-- Вкладка для ввода данных о проекте -->
             <TabItem Header="Project Info">
                 <StackPanel>
-                    <!-- Поле для ввода названия проекта -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Project Name:" />
                         <TextBox Name="ProjectName" />
                     </StackPanel>
 
-                    <!-- Поле для ввода компании заказчика -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Customer Company:" />
                         <TextBox Name="CustomerCompany" />
                     </StackPanel>
 
-                    <!-- Поле для ввода компании подрядчика -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Contractor Company:" />
                         <TextBox Name="ContractorCompany" />
                     </StackPanel>
 
-                    <!-- Выбор даты начала проекта -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Start Date:" />
                         <DatePicker Name="StartDate" />
                     </StackPanel>
 
-                    <!-- Выбор даты окончания проекта -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="End Date:" />
                         <DatePicker Name="EndDate" />
                     </StackPanel>
 
-                    <!-- Выбор приоритета проекта -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Priority:" />
                         <ComboBox Name="PriorityComboBox">
@@ -49,22 +42,18 @@
                 </StackPanel>
             </TabItem>
 
-            <!-- Вкладка для выбора сотрудников -->
             <TabItem Header="Team">
                 <StackPanel>
-                    <!-- Выбор руководителя проекта -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Project Manager:" />
                         <ComboBox Name="ProjectManagerComboBox" DisplayMemberPath="FullName" SelectedItem="{Binding SelectedProjectManager}" />
                     </StackPanel>
 
-                    <!-- Поле для фильтрации сотрудников -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Filter Employees:" />
                         <TextBox Name="EmployeeFilterTextBox" Width="300" TextChanged="OnEmployeeFilterTextChanged" />
                     </StackPanel>
                   
-                    <!-- Выбор исполнителей проекта -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Employees:" />
                         <ListBox Name="EmployeesListBox" SelectionMode="Multiple" DisplayMemberPath="FullName" />
@@ -73,7 +62,6 @@
             </TabItem>
         </TabControl>
 
-        <!-- Кнопка добавления проекта -->
         <Button Content="Add Project" Margin="0,10" VerticalAlignment="Bottom" Click="OnAddProjectClick" />
     </Grid>
 </Window>

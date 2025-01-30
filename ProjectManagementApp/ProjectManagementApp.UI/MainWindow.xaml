@@ -1,13 +1,35 @@
 ﻿<Window x:Class="ProjectManagementApp.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Project Management" Height="450" Width="800">
+        Title="Project Management" Height="450" Width="900">
     <Grid>
         <TabControl>
             <TabItem Header="Projects">
                 <StackPanel>
+
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Left">
+                            
+                            <Label Content="Start Date:" VerticalAlignment="Center"/>
+                            <DatePicker SelectedDate="{Binding FilterStartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Margin="5"/>
+
+                            <Label Content="End Date:" VerticalAlignment="Center"/>
+                            <DatePicker SelectedDate="{Binding FilterEndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Margin="5"/>
+
+                            <Label Content="Priority:" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding PriorityOptions}" 
+                  SelectedItem="{Binding SelectedPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  Width="100" Margin="5"/>
+
+                            <Button Content="Search" Width="100" Command="{Binding SearchCommand}" Margin="5"/>
+                            <Button Content="Reset Filters" Width="100" Command="{Binding ResetSearchCommand}" Margin="5"/>
+
+                        </StackPanel>
+                    </StackPanel>
+
                     <Button Content="Add Project" Width="200" Margin="10" Command="{Binding AddProjectCommand}" />
-                    <DataGrid ItemsSource="{Binding Projects}" AutoGenerateColumns="False">
+
+                    <DataGrid ItemsSource="{Binding Projects}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedProject}" Margin="10">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                             <DataGridTextColumn Header="Customer" Binding="{Binding CustomerCompany}" />
@@ -17,21 +39,49 @@
                             <DataGridTextColumn Header="Priority" Binding="{Binding Priority}" />
                             <DataGridTextColumn Header="Project Manager" Binding="{Binding ProjectManager.FullName}" />
                             <DataGridTextColumn Header="Employees Count" Binding="{Binding Employees.Count}" />
+
+                            <DataGridTemplateColumn Header="Actions">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Content="Edit" Width="75" Margin="5" Command="{Binding DataContext.EditProjectCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" />
+                                            <Button Content="Delete" Width="75" Margin="5" Command="{Binding DataContext.DeleteProjectCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Employees">
+
+                <StackPanel>
+                    <Button Content="Add Employee" Width="200" Margin="10" Command="{Binding AddEmployeeCommand}" />
+
+                    <DataGrid ItemsSource="{Binding Employees}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedEmployee}" Margin="10">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
+                            <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+
+                            <DataGridTemplateColumn Header="Actions">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Content="Edit" Width="75" Margin="5" Command="{Binding DataContext.EditEmployeeCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" />
+                                            <Button Content="Delete" Width="75" Margin="5" Command="{Binding DataContext.DeleteEmployeeCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Employees">
-                <DataGrid ItemsSource="{Binding Employees}" AutoGenerateColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
-                        <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
-                        <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </TabItem>
         </TabControl>
     </Grid>
 </Window>
-
-

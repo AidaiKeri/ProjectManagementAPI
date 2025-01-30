@@ -35,26 +35,6 @@ namespace ProjectManagementAPI.Services
             }
         }
 
-        public void AddEmployeeToProject(int projectId, int employeeId)
-        {
-            var project = GetProjectById(projectId);
-            var employee = MockData.Employees.FirstOrDefault(e => e.Id == employeeId);
-            if (project != null && employee != null && !project.Employees.Contains(employee))
-            {
-                project.Employees.Add(employee);
-            }
-        }
-
-        public void RemoveEmployeeFromProject(int projectId, int employeeId)
-        {
-            var project = GetProjectById(projectId);
-            var employee = MockData.Employees.FirstOrDefault(e => e.Id == employeeId);
-            if (project != null && employee != null)
-            {
-                project.Employees.Remove(employee);
-            }
-        }
-
         public List<Project> FilterProjectsByDateRange(DateTime startDate, DateTime endDate)
         {
             return MockData.Projects
@@ -67,13 +47,6 @@ namespace ProjectManagementAPI.Services
             return MockData.Projects
                 .Where(p => p.Priority == priority)
                 .ToList();
-        }
-
-        public List<Project> SortProjectsByField(Func<Project, object> keySelector, bool ascending = true)
-        {
-            return ascending
-                ? MockData.Projects.OrderBy(keySelector).ToList()
-                : MockData.Projects.OrderByDescending(keySelector).ToList();
         }
     }
 }

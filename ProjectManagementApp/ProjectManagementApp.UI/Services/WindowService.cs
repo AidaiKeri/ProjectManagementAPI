@@ -18,12 +18,28 @@ namespace ProjectManagementApp.UI.Services
 
         public void ShowAddProjectWindow(Action<Project> onProjectAdded)
         {
-            // Получаем список сотрудников
             var allEmployees = _employeeService.GetAllEmployees(); 
 
-            // Создаем окно и передаем все параметры
             var addProjectWindow = new AddProjectWindow(_projectService, onProjectAdded, allEmployees);
             addProjectWindow.ShowDialog();
+        }
+
+        public void ShowEditProjectWindow(Project project, Action<Project> onProjectUpdated)
+        {
+            var editProjectWindow = new EditProjectWindow(_projectService, _employeeService, project, onProjectUpdated);
+            editProjectWindow.ShowDialog();
+        }
+
+        public void ShowAddEmployeeWindow(Action<Employee> onEmployeeAdded)
+        {
+            var addEmployeeWindow = new AddEmployeeWindow(_employeeService, onEmployeeAdded);
+            addEmployeeWindow.ShowDialog();
+        }
+
+        public void ShowEditEmployeeWindow(Employee employee, Action<Employee> onEmployeeUpdated)
+        {
+            var editEmployeeWindow = new EditEmployeeWindow(_employeeService, employee, onEmployeeUpdated);
+            editEmployeeWindow.ShowDialog();
         }
     }
 }

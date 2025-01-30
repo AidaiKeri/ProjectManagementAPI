@@ -10,16 +10,16 @@ namespace ProjectManagementAPI.DataAccess
         new Employee
         {
             Id = 1,
-            FirstName = "Alice",
-            LastName = "Johnson",
-            Email = "alice.johnson@example.com"
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "johndoe@example.com"
         },
         new Employee
         {
             Id = 2,
-            FirstName = "Bob",
+            FirstName = "Kate",
             LastName = "Smith",
-            Email = "bob.smith@example.com"
+            Email = "katesmith@example.com"
         }
     };
     }

@@ -12,7 +12,7 @@ namespace ProjectManagementApp.UI.Views
     {
         private readonly IProject _projectService;
         private readonly Action<Project> _onProjectAdded;
-        private readonly List<Employee> _allEmployees; // Список всех сотрудников
+        private readonly List<Employee> _allEmployees; 
 
         public AddProjectWindow(IProject projectService, Action<Project> onProjectAdded, List<Employee> allEmployees)
         {
@@ -21,7 +21,6 @@ namespace ProjectManagementApp.UI.Views
             _onProjectAdded = onProjectAdded;
             _allEmployees = allEmployees;
 
-            // Заполняем ComboBox с сотрудниками
             ProjectManagerComboBox.ItemsSource = _allEmployees;
             EmployeesListBox.ItemsSource = _allEmployees;
         }
@@ -33,7 +32,6 @@ namespace ProjectManagementApp.UI.Views
               emp.FirstName.ToLower().Contains(filter) || emp.LastName.ToLower().Contains(filter))
               .ToList();
 
-            // Обновляем источник данных для списка сотрудников
             EmployeesListBox.ItemsSource = filteredEmployees;
         }
 
@@ -41,7 +39,6 @@ namespace ProjectManagementApp.UI.Views
         {
             try
             {
-                // Считываем данные из полей
                 var projectName = ProjectName.Text;
                 var customerCompany = CustomerCompany.Text;
                 var contractorCompany = ContractorCompany.Text;
@@ -51,7 +48,6 @@ namespace ProjectManagementApp.UI.Views
                 var projectManager = ProjectManagerComboBox.SelectedItem as Employee;
                 var selectedEmployees = EmployeesListBox.SelectedItems.Cast<Employee>().ToList();
 
-                // Проверка обязательных полей
                 if (string.IsNullOrWhiteSpace(projectName) ||
                     string.IsNullOrWhiteSpace(customerCompany) ||
                     string.IsNullOrWhiteSpace(contractorCompany) ||
@@ -64,7 +60,6 @@ namespace ProjectManagementApp.UI.Views
                     return;
                 }
 
-                // Конвертация приоритета
                 int priority = priorityString switch
                 {
                     "Low" => 1,
@@ -73,7 +68,6 @@ namespace ProjectManagementApp.UI.Views
                     _ => 0
                 };
 
-                // Создание объекта проекта
                 var newProject = new Project
                 {
                     Name = projectName,
@@ -82,11 +76,10 @@ namespace ProjectManagementApp.UI.Views
                     StartDate = startDate.Value,
                     EndDate = endDate.Value,
                     Priority = priority,
-                    ProjectManager = projectManager, // Руководитель проекта
-                    Employees = selectedEmployees // Исполнители
+                    ProjectManager = projectManager, 
+                    Employees = selectedEmployees 
                 };
 
-                // Сохранение проекта
                 _projectService.CreateProject(newProject);
                 _onProjectAdded(newProject);
 

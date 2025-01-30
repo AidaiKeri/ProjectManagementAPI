@@ -1,0 +1,61 @@
+﻿<Window x:Class="ProjectManagementApp.UI.Views.EditProjectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edit Project" Height="600" Width="600">
+    <Grid Margin="10">
+        <StackPanel>
+            <StackPanel Margin="0,5">
+                <TextBlock Text="Project Name:" />
+                <TextBox Name="ProjectName" />
+            </StackPanel>
+
+            <StackPanel Margin="0,5">
+                <TextBlock Text="Customer Company:" />
+                <TextBox Name="CustomerCompany" />
+            </StackPanel>
+
+            <StackPanel Margin="0,5">
+                <TextBlock Text="Contractor Company:" />
+                <TextBox Name="ContractorCompany" />
+            </StackPanel>
+
+            <StackPanel Margin="0,5">
+                <TextBlock Text="Start Date:" />
+                <DatePicker Name="StartDate" />
+            </StackPanel>
+
+            <StackPanel Margin="0,5">
+                <TextBlock Text="End Date:" />
+                <DatePicker Name="EndDate" />
+            </StackPanel>
+
+            <StackPanel Margin="0,5">
+                <TextBlock Text="Priority:" />
+                <ComboBox Name="PriorityComboBox">
+                    <ComboBoxItem Content="Low" />
+                    <ComboBoxItem Content="Medium" />
+                    <ComboBoxItem Content="High" />
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,5">
+                <TextBlock Text="Project Manager:" />
+                <ComboBox Name="ProjectManagerComboBox" DisplayMemberPath="FirstName" />
+            </StackPanel>
+
+            <StackPanel Margin="0,5">
+                <TextBlock Text="Project Employees:" />
+                <ListBox Name="ProjectEmployeesListBox" DisplayMemberPath="FirstName" SelectionMode="Single" />
+                <Button Content="Remove Selected Employee" Click="OnRemoveEmployeeFromProjectClick" Margin="0,5" />
+            </StackPanel>
+
+            <StackPanel Margin="0,5">
+                <TextBlock Text="All Employees:" />
+                <ListBox Name="AllEmployeesListBox" DisplayMemberPath="FirstName" SelectionMode="Single" />
+                <Button Content="Add Selected Employee" Click="OnAddEmployeeToProjectClick" Margin="0,5" />
+            </StackPanel>
+
+            <Button Content="Save Changes" Click="OnSaveChangesClick" Margin="0,10" />
+        </StackPanel>
+    </Grid>
+</Window>

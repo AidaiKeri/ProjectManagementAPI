@@ -1,0 +1,30 @@
+﻿<Window x:Class="ProjectManagementApp.UI.Views.AddEmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Employee" Height="300" Width="400">
+    <Grid Margin="10">
+        <TabControl>
+            <TabItem Header="Employee Info">
+                <StackPanel>
+                    <StackPanel Margin="0,5">
+                        <TextBlock Text="First Name:" />
+                        <TextBox Name="EmployeeFirstName" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,5">
+                        <TextBlock Text="Last Name:" />
+                        <TextBox Name="EmployeeLastName" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,5">
+                        <TextBlock Text="Email:" />
+                        <TextBox Name="EmployeeEmail" />
+                    </StackPanel>
+
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <Button Content="Add Employee" Margin="0,10" VerticalAlignment="Bottom" Click="OnAddEmployeeClick" />
+    </Grid>
+</Window>
