@@ -1,5 +1,5 @@
-﻿using ProjectManagementAPI.Entities;
-using ProjectManagementAPI.Interfaces;
+﻿using ProjectManagement.DAL.Entities;
+using ProjectManagement.BLL.Interfaces;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -75,12 +75,12 @@ namespace ProjectManagementApp.UI.Views
                     ContractorCompany = contractorCompany,
                     StartDate = startDate.Value,
                     EndDate = endDate.Value,
-                    Priority = priority,
+                    //Priority = priority,
                     ProjectManager = projectManager, 
                     Employees = selectedEmployees 
                 };
 
-                _projectService.CreateProject(newProject);
+                //_projectService.CreateProject(newProject);
                 _onProjectAdded(newProject);
 
                 MessageBox.Show("Project added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

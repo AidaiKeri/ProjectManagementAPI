@@ -1,6 +1,6 @@
-﻿using ProjectManagementAPI.Entities;
-using ProjectManagementAPI.Interfaces;
-using ProjectManagementAPI.Services;
+﻿using ProjectManagement.DAL.Entities;
+using ProjectManagement.BLL.Interfaces;
+using ProjectManagement.BLL.Services;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -46,7 +46,7 @@ namespace ProjectManagementApp.UI.Views
             if (selectedEmployee != null && !_project.Employees.Contains(selectedEmployee))
             {
                 _project.Employees.Add(selectedEmployee);
-                _projectService.UpdateProject(_project);
+                //_projectService.UpdateProject(_project);
                 RefreshEmployeeLists();
             }
         }
@@ -57,7 +57,7 @@ namespace ProjectManagementApp.UI.Views
             if (selectedEmployee != null)
             {
                 _project.Employees.Remove(selectedEmployee);
-                _projectService.UpdateProject(_project);
+                //_projectService.UpdateProject(_project);
                 RefreshEmployeeLists();
             }
         }
@@ -80,16 +80,16 @@ namespace ProjectManagementApp.UI.Views
                 _project.ContractorCompany = ContractorCompany.Text;
                 _project.StartDate = StartDate.SelectedDate.Value;
                 _project.EndDate = EndDate.SelectedDate.Value;
-                _project.Priority = (PriorityComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() switch
-                {
-                    "Low" => 1,
-                    "Medium" => 2,
-                    "High" => 3,
-                    _ => 0 
-                };
+                //_project.Priority = (PriorityComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() switch
+                //{
+                //    "Low" => 1,
+                //    "Medium" => 2,
+                //    "High" => 3,
+                //    _ => 0 
+                //};
                 _project.ProjectManager = ProjectManagerComboBox.SelectedItem as Employee;
 
-                _projectService.UpdateProject(_project);
+                //_projectService.UpdateProject(_project);
                 _onProjectUpdated?.Invoke(_project);
 
                 MessageBox.Show("Project updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

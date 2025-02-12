@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ProjectManagementAPI.Interfaces;
-using ProjectManagementAPI.Services;
+using ProjectManagement.BLL.Interfaces;
+using ProjectManagement.BLL.Services;
 using ProjectManagementApp.UI.Interfaces;
 using ProjectManagementApp.UI.ViewModels;
 using ProjectManagementApp.UI.Services;

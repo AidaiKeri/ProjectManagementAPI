@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using ProjectManagementAPI.Entities;
-using ProjectManagementAPI.Interfaces;
+using ProjectManagement.DAL.Entities;
+using ProjectManagement.BLL.Interfaces;
 using ProjectManagementApp.UI.Helpers;
 using ProjectManagementApp.UI.Interfaces;
 
@@ -117,7 +117,7 @@ namespace ProjectManagementApp.UI.ViewModels
                 Projects.Insert(index, updatedProject);
             }
 
-            _projectService.UpdateProject(updatedProject);
+            //_projectService.UpdateProject(updatedProject);
         }
 
         private void OnEmployeesUpdated(Employee updatedEmployee)
@@ -132,7 +132,7 @@ namespace ProjectManagementApp.UI.ViewModels
                 Employees.Insert(index, existingEmployee);
             }
 
-            _employeeService.UpdateEmployee(updatedEmployee);
+            //_employeeService.UpdateEmployee(updatedEmployee.Id, updatedEmployee);
         }
 
         private void OnProjectAdded(Project newProject)
@@ -155,10 +155,10 @@ namespace ProjectManagementApp.UI.ViewModels
         {
             IEnumerable<Project> filteredProjects = _allProjects;
 
-            if (FilterStartDate.HasValue && FilterEndDate.HasValue)
-            {
-                filteredProjects = _projectService.FilterProjectsByDateRange(FilterStartDate.Value, FilterEndDate.Value);
-            }
+            //if (FilterStartDate.HasValue && FilterEndDate.HasValue)
+            //{
+            //    filteredProjects = _projectService.FilterProjectsByDateRange(FilterStartDate.Value, FilterEndDate.Value);
+            //}
 
             if (!string.IsNullOrEmpty(SelectedPriority))
             {
@@ -170,10 +170,10 @@ namespace ProjectManagementApp.UI.ViewModels
                     _ => 0
                 };
 
-                if (priorityValue > 0)
-                {
-                    filteredProjects = _projectService.FilterProjectsByPriority(priorityValue);
-                }
+                //if (priorityValue > 0)
+                //{
+                //    filteredProjects = _projectService.FilterProjectsByPriority(priorityValue);
+                //}
             }
 
             Projects.Clear();

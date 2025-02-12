@@ -1,5 +1,5 @@
-﻿using ProjectManagementAPI.Entities;
-using ProjectManagementAPI.Interfaces;
+﻿using ProjectManagement.DAL.Entities;
+using ProjectManagement.BLL.Interfaces;
 using ProjectManagementApp.UI.Interfaces;
 using ProjectManagementApp.UI.Views;
 

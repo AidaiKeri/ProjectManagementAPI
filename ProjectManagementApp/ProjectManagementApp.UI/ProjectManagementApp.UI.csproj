@@ -6,6 +6,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProjectManagement.BLL\ProjectManagement.BLL.csproj" />
     <ProjectReference Include="..\ProjectManagementAPI\ProjectManagementAPI.csproj" />
   </ItemGroup>
 

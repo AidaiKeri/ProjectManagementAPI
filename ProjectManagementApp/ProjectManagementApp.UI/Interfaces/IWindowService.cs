@@ -1,4 +1,4 @@
-﻿using ProjectManagementAPI.Entities;
+﻿using ProjectManagement.DAL.Entities;
 
 namespace ProjectManagementApp.UI.Interfaces
 {

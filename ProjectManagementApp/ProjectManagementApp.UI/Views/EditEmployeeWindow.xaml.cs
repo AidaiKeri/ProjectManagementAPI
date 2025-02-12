@@ -1,5 +1,5 @@
-﻿using ProjectManagementAPI.Entities;
-using ProjectManagementAPI.Interfaces;
+﻿using ProjectManagement.DAL.Entities;
+using ProjectManagement.BLL.Interfaces;
 using System.Windows;
 
 namespace ProjectManagementApp.UI.Views
@@ -32,7 +32,7 @@ namespace ProjectManagementApp.UI.Views
                 _employee.LastName = EmployeeLastName.Text;
                 _employee.Email = EmployeeEmail.Text;
 
-                _employeeService.UpdateEmployee(_employee);
+                //_employeeService.UpdateEmployee(_employee);
                 _onEmployeeUpdated?.Invoke(_employee);
 
                 MessageBox.Show("Employee updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

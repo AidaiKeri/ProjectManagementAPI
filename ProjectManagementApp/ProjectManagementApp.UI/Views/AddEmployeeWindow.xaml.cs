@@ -1,5 +1,5 @@
-﻿using ProjectManagementAPI.Entities;
-using ProjectManagementAPI.Interfaces;
+﻿using ProjectManagement.DAL.Entities;
+using ProjectManagement.BLL.Interfaces;
 using System.Windows;
 
 namespace ProjectManagementApp.UI.Views
@@ -42,7 +42,7 @@ namespace ProjectManagementApp.UI.Views
                     Email = employeeEmail
                 };
 
-                _employeeService.CreateEmployee(newEmployee);
+                //_employeeService.CreateEmployee(newEmployee);
                 _onEmployeeAdded(newEmployee);
 
                 MessageBox.Show("Employee added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
