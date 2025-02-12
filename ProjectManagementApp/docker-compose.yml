@@ -3,8 +3,8 @@ version: '3.8'
 services:
   api:
     build:
-      context: ./ProjectManagementAPI
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ProjectManagementAPI/Dockerfile
     container_name: dotnet_api
     depends_on:
       - db
@@ -23,7 +23,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1123581321
     ports:
-      - "5432:5432"
+      - "5430:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:

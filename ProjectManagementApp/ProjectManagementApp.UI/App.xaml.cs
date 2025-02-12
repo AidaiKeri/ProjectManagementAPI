@@ -5,6 +5,8 @@ using ProjectManagementApp.UI.Interfaces;
 using ProjectManagementApp.UI.ViewModels;
 using ProjectManagementApp.UI.Services;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
+using ProjectManagement.DAL.DataAccess;
 
 namespace ProjectManagementApp.UI
 {
@@ -16,8 +18,11 @@ namespace ProjectManagementApp.UI
         {
             var serviceCollection = new ServiceCollection();
 
-            serviceCollection.AddSingleton<IProject, ProjectService>(); 
-            serviceCollection.AddSingleton<IEmployee, EmployeeService>(); 
+            serviceCollection.AddDbContext<WebApiDbContext>(options =>
+                options.UseNpgsql("Server=localhost;Database=ProjectApi;Port=5430;User Id=postgres;Password=1123581321;Trust Server Certificate=true;"));
+
+            serviceCollection.AddScoped<IProject, ProjectService>();
+            serviceCollection.AddScoped<IEmployee, EmployeeService>();
             serviceCollection.AddSingleton<IWindowService, WindowService>();
 
             serviceCollection.AddSingleton<MainViewModel>();
@@ -31,10 +36,10 @@ namespace ProjectManagementApp.UI
             base.OnStartup(e);
 
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-
             mainWindow.Show();
         }
     }
 }
+
 
 

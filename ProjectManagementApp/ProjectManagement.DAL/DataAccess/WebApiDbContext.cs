@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using ProjectManagement.DAL.Entities;
 
 namespace ProjectManagement.DAL.DataAccess
 {
     public class WebApiDbContext : DbContext
     {
+        public WebApiDbContext(DbContextOptions<WebApiDbContext> options) : base(options)
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseNpgsql("Server=localhost;Database=ProjectApi;Port=5432;User Id=postgres;Password=1123581321;Trust Server Certificate=true;");
+            options.UseNpgsql("Server=db;Database=ProjectApi;Port=5430;User Id=postgres;Password=1123581321;Trust Server Certificate=true;");
         }    
 
         public DbSet<Employee> Employees { get; set; }

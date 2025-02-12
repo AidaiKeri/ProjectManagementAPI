@@ -6,9 +6,6 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddDbContext<WebApiDbContext>(options =>
-//    options.UseNpgsql(builder.Configuration.GetConnectionString("ProjectApiDb"))
-//);
 builder.Services.AddDbContext<WebApiDbContext>();
 
 builder.Services.AddScoped<IEmployee, EmployeeService>();
@@ -24,6 +21,12 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<WebApiDbContext>();
+    dbContext.Database.Migrate(); 
+}
 
 if (app.Environment.IsDevelopment())
 {
