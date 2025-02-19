@@ -7,6 +7,8 @@ using ProjectManagementApp.UI.Services;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagement.DAL.DataAccess;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace ProjectManagementApp.UI
 {
@@ -18,8 +20,21 @@ namespace ProjectManagementApp.UI
         {
             var serviceCollection = new ServiceCollection();
 
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) 
+                .Build();
+
+            var connectionString = configuration.GetConnectionString("UiConnection");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Connection string 'UiConnection' is not found in the configuration.");
+            }
+
+            serviceCollection.AddSingleton<IConfiguration>(configuration);
+
             serviceCollection.AddDbContext<WebApiDbContext>(options =>
-                options.UseNpgsql("Server=localhost;Database=ProjectApi;Port=5430;User Id=postgres;Password=1123581321;Trust Server Certificate=true;"));
+                 options.UseNpgsql(connectionString));
 
             serviceCollection.AddScoped<IProject, ProjectService>();
             serviceCollection.AddScoped<IEmployee, EmployeeService>();

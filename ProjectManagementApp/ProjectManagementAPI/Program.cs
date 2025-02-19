@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using ProjectManagement.DAL.DataAccess;
 using ProjectManagement.BLL.Interfaces;
 using ProjectManagement.BLL.Services;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,17 +22,16 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<WebApiDbContext>();
-    dbContext.Database.Migrate(); 
+    dbContext.Database.Migrate();
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
 

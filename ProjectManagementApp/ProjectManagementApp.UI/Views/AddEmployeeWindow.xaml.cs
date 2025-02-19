@@ -1,6 +1,7 @@
 ﻿using ProjectManagement.DAL.Entities;
 using ProjectManagement.BLL.Interfaces;
 using System.Windows;
+using ProjectManagement.DAL.Models;
 
 namespace ProjectManagementApp.UI.Views
 {
@@ -24,25 +25,34 @@ namespace ProjectManagementApp.UI.Views
             try
             {
                 var employeeFirstName = EmployeeFirstName.Text;
-                var employeeLasttName = EmployeeLastName.Text;
+                var employeeLastName = EmployeeLastName.Text;
                 var employeeEmail = EmployeeEmail.Text;
 
                 if (string.IsNullOrWhiteSpace(employeeFirstName) ||
-                    string.IsNullOrWhiteSpace(employeeLasttName) ||
+                    string.IsNullOrWhiteSpace(employeeLastName) ||
                     string.IsNullOrWhiteSpace(employeeEmail))
                 {
                     MessageBox.Show("Please fill in all required fields.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
-                
-                var newEmployee = new Employee
+
+                var newEmployeeModel = new CreateEmployeeModel
                 {
                     FirstName = employeeFirstName,
-                    LastName = employeeLasttName,
+                    LastName = employeeLastName,
                     Email = employeeEmail
                 };
 
-                //_employeeService.CreateEmployee(newEmployee);
+                var createdEmployee = _employeeService.CreateEmployee(newEmployeeModel);
+
+                var newEmployee = new Employee
+                {
+                    Id = createdEmployee.Id, 
+                    FirstName = createdEmployee.FirstName,
+                    LastName = createdEmployee.LastName,
+                    Email = createdEmployee.Email
+                };
+
                 _onEmployeeAdded(newEmployee);
 
                 MessageBox.Show("Employee added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

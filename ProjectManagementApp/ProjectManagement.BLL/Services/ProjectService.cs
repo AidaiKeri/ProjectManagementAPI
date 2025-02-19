@@ -60,6 +60,8 @@ namespace ProjectManagement.BLL.Services
                 EndDate = project.EndDate,
                 Priority = project.Priority,
                 ProjectManagerId = projectManager.Id,
+                ProjectManager = projectManager,  
+                Employees = new List<Employee>()
             };
             _context.Projects.Add(newProject);
             _context.SaveChanges();
@@ -174,9 +176,10 @@ namespace ProjectManagement.BLL.Services
 
             if (!project.Employees.Contains(employee))
             {
-                project.Employees.Add(employee);
-                _context.SaveChanges();
+                project.Employees.Add(employee);               
             }
+
+            _context.SaveChanges();
         }
 
         public void RemoveEmployeeFromProject(Guid projectId, Guid employeeId)

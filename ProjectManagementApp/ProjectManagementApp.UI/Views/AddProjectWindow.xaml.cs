@@ -2,6 +2,7 @@
 using ProjectManagement.BLL.Interfaces;
 using System.Windows;
 using System.Windows.Controls;
+using ProjectManagement.DAL.Models;
 
 namespace ProjectManagementApp.UI.Views
 {
@@ -21,6 +22,12 @@ namespace ProjectManagementApp.UI.Views
             _onProjectAdded = onProjectAdded;
             _allEmployees = allEmployees;
 
+            ProjectManagerComboBox.ItemsSource = _allEmployees;
+            EmployeesListBox.ItemsSource = _allEmployees;
+        }
+
+        private void OnWindowLoaded(object sender, RoutedEventArgs e)
+        {
             ProjectManagerComboBox.ItemsSource = _allEmployees;
             EmployeesListBox.ItemsSource = _allEmployees;
         }
@@ -60,27 +67,48 @@ namespace ProjectManagementApp.UI.Views
                     return;
                 }
 
-                int priority = priorityString switch
+                DateTime startDateUtc = startDate.Value.ToUniversalTime();
+                DateTime endDateUtc = endDate.Value.ToUniversalTime();
+
+                var priority = priorityString switch
                 {
-                    "Low" => 1,
-                    "Medium" => 2,
-                    "High" => 3,
-                    _ => 0
+                    "Low" => ProjectManagement.DAL.Enum.Priority.Low,
+                    "Medium" => ProjectManagement.DAL.Enum.Priority.Medium,
+                    "High" => ProjectManagement.DAL.Enum.Priority.High,
+                    _ => throw new InvalidOperationException("Invalid priority selection")
                 };
 
-                var newProject = new Project
+                var newProjectModel = new CreateProjectModel
                 {
                     Name = projectName,
                     CustomerCompany = customerCompany,
                     ContractorCompany = contractorCompany,
-                    StartDate = startDate.Value,
-                    EndDate = endDate.Value,
-                    //Priority = priority,
-                    ProjectManager = projectManager, 
-                    Employees = selectedEmployees 
+                    StartDate = startDateUtc,
+                    EndDate = endDateUtc,
+                    Priority = priority,
+                    ProjectManagerId = projectManager.Id
                 };
 
-                //_projectService.CreateProject(newProject);
+                var createdProject = _projectService.CreateProject(newProjectModel);
+
+                foreach (var employee in selectedEmployees)
+                {
+                    _projectService.AddEmployeeToProject(createdProject.Id, employee.Id);
+                }
+
+                var newProject = new Project
+                {
+                    Id = createdProject.Id,
+                    Name = createdProject.Name,
+                    CustomerCompany = createdProject.CustomerCompany,
+                    ContractorCompany = createdProject.ContractorCompany,
+                    StartDate = createdProject.StartDate,
+                    EndDate = createdProject.EndDate,
+                    Priority = createdProject.Priority,
+                    ProjectManager = projectManager,
+                    Employees = selectedEmployees
+                };
+
                 _onProjectAdded(newProject);
 
                 MessageBox.Show("Project added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

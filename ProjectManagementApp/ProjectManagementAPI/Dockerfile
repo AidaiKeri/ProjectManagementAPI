@@ -17,4 +17,4 @@ COPY --from=build /app/publish .
 EXPOSE 5225
 ENV ASPNETCORE_URLS=http://+:5225
 
-ENTRYPOINT ["dotnet", "ProjectManagementAPI.dll"]
+ENTRYPOINT ["sh", "-c", "dotnet ProjectManagementAPI.dll && dotnet ef database update"]

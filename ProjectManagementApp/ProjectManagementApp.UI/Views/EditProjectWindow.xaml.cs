@@ -1,8 +1,8 @@
 ﻿using ProjectManagement.DAL.Entities;
 using ProjectManagement.BLL.Interfaces;
-using ProjectManagement.BLL.Services;
 using System.Windows;
 using System.Windows.Controls;
+using ProjectManagement.DAL.Models;
 
 namespace ProjectManagementApp.UI.Views
 {
@@ -46,7 +46,20 @@ namespace ProjectManagementApp.UI.Views
             if (selectedEmployee != null && !_project.Employees.Contains(selectedEmployee))
             {
                 _project.Employees.Add(selectedEmployee);
-                //_projectService.UpdateProject(_project);
+
+                var createProjectModel = new CreateProjectModel
+                {
+                    Name = _project.Name,
+                    CustomerCompany = _project.CustomerCompany,
+                    ContractorCompany = _project.ContractorCompany,
+                    StartDate = _project.StartDate,
+                    EndDate = _project.EndDate,
+                    Priority = _project.Priority,
+                    ProjectManagerId = _project.ProjectManager?.Id,
+                };
+
+                _projectService.UpdateProject(_project.Id, createProjectModel);
+
                 RefreshEmployeeLists();
             }
         }
@@ -57,7 +70,20 @@ namespace ProjectManagementApp.UI.Views
             if (selectedEmployee != null)
             {
                 _project.Employees.Remove(selectedEmployee);
-                //_projectService.UpdateProject(_project);
+
+                var createProjectModel = new CreateProjectModel
+                {
+                    Name = _project.Name,
+                    CustomerCompany = _project.CustomerCompany,
+                    ContractorCompany = _project.ContractorCompany,
+                    StartDate = _project.StartDate,
+                    EndDate = _project.EndDate,
+                    Priority = _project.Priority,
+                    ProjectManagerId = _project.ProjectManager?.Id,
+                };
+
+                _projectService.UpdateProject(_project.Id, createProjectModel);
+
                 RefreshEmployeeLists();
             }
         }
@@ -75,21 +101,27 @@ namespace ProjectManagementApp.UI.Views
         {
             try
             {
-                _project.Name = ProjectName.Text;
-                _project.CustomerCompany = CustomerCompany.Text;
-                _project.ContractorCompany = ContractorCompany.Text;
-                _project.StartDate = StartDate.SelectedDate.Value;
-                _project.EndDate = EndDate.SelectedDate.Value;
-                //_project.Priority = (PriorityComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() switch
-                //{
-                //    "Low" => 1,
-                //    "Medium" => 2,
-                //    "High" => 3,
-                //    _ => 0 
-                //};
-                _project.ProjectManager = ProjectManagerComboBox.SelectedItem as Employee;
+                var startDateUtc = StartDate.SelectedDate.Value.ToUniversalTime();
+                var endDateUtc = EndDate.SelectedDate.Value.ToUniversalTime();
 
-                //_projectService.UpdateProject(_project);
+                var createProjectModel = new CreateProjectModel
+                {
+                    Name = ProjectName.Text,
+                    CustomerCompany = CustomerCompany.Text,
+                    ContractorCompany = ContractorCompany.Text,
+                    StartDate = startDateUtc,
+                    EndDate = endDateUtc,
+                    Priority = (PriorityComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() switch
+                    {
+                        "Low" => ProjectManagement.DAL.Enum.Priority.Low,
+                        "Medium" => ProjectManagement.DAL.Enum.Priority.Medium,
+                        "High" => ProjectManagement.DAL.Enum.Priority.High,
+                    },
+                    ProjectManagerId = (ProjectManagerComboBox.SelectedItem as Employee)?.Id,
+                };
+
+                _projectService.UpdateProject(_project.Id, createProjectModel);
+
                 _onProjectUpdated?.Invoke(_project);
 
                 MessageBox.Show("Project updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

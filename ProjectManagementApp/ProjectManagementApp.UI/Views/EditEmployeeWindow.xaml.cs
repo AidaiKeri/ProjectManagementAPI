@@ -1,6 +1,7 @@
 ﻿using ProjectManagement.DAL.Entities;
 using ProjectManagement.BLL.Interfaces;
 using System.Windows;
+using ProjectManagement.DAL.Models;
 
 namespace ProjectManagementApp.UI.Views
 {
@@ -28,11 +29,21 @@ namespace ProjectManagementApp.UI.Views
         {
             try
             {
-                _employee.FirstName = EmployeeFirstName.Text;
-                _employee.LastName = EmployeeLastName.Text;
-                _employee.Email = EmployeeEmail.Text;
+                var updatedEmployeeModel = new CreateEmployeeModel
+                {
+                    FirstName = EmployeeFirstName.Text,
+                    LastName = EmployeeLastName.Text,
+                    Email = EmployeeEmail.Text
+                };
 
-                //_employeeService.UpdateEmployee(_employee);
+                _employeeService.UpdateEmployee(_employee.Id, updatedEmployeeModel);
+
+                DataContext = null;
+                _employee.FirstName = updatedEmployeeModel.FirstName;
+                _employee.LastName = updatedEmployeeModel.LastName;
+                _employee.Email = updatedEmployeeModel.Email;
+                DataContext = _employee;
+
                 _onEmployeeUpdated?.Invoke(_employee);
 
                 MessageBox.Show("Employee updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

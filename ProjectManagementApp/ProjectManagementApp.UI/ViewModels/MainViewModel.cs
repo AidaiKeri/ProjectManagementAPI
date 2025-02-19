@@ -4,6 +4,7 @@ using ProjectManagement.DAL.Entities;
 using ProjectManagement.BLL.Interfaces;
 using ProjectManagementApp.UI.Helpers;
 using ProjectManagementApp.UI.Interfaces;
+using ProjectManagement.DAL.Models;
 
 namespace ProjectManagementApp.UI.ViewModels
 {
@@ -16,8 +17,6 @@ namespace ProjectManagementApp.UI.ViewModels
         public ObservableCollection<Project> Projects { get; set; }
         public ObservableCollection<Employee> Employees { get; set; }
 
-        private List<Project> _allProjects;
-
         public ICommand AddProjectCommand { get; set; }
         public ICommand AddEmployeeCommand { get; set; }
         public ICommand EditProjectCommand { get; set; }
@@ -25,12 +24,13 @@ namespace ProjectManagementApp.UI.ViewModels
         public ICommand EditEmployeeCommand { get; set; }
         public ICommand DeleteEmployeeCommand { get; set; }
         public ICommand ApplyFilterCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
         public ICommand ResetSearchCommand { get; set; }
+        public ICommand SearchCommand { get; set; }
 
         public DateTime? FilterStartDate { get; set; }
         public DateTime? FilterEndDate { get; set; }
         public string SelectedPriority { get; set; }
+        public string SearchQuery { get; set; }
 
         public List<string> PriorityOptions { get; set; }
 
@@ -40,9 +40,7 @@ namespace ProjectManagementApp.UI.ViewModels
             _employeeService = employeeService ?? throw new ArgumentNullException(nameof(employeeService));
             _windowService = windowService ?? throw new ArgumentNullException(nameof(windowService));
 
-            _allProjects = _projectService.GetAllProjects();
-            Projects = new ObservableCollection<Project>(_allProjects);
-            Employees = new ObservableCollection<Employee>(_employeeService.GetAllEmployees());
+            LoadData();
 
             PriorityOptions = new List<string> { "Low", "Medium", "High" };
 
@@ -53,8 +51,14 @@ namespace ProjectManagementApp.UI.ViewModels
             EditProjectCommand = new RelayCommand<Project>(EditProject);
             DeleteProjectCommand = new RelayCommand<Project>(DeleteProject);
             ApplyFilterCommand = new RelayCommand(FilterAndSortProjects);
-            SearchCommand = new RelayCommand(FilterAndSortProjects);
             ResetSearchCommand = new RelayCommand(ResetFilters);
+            SearchCommand = new RelayCommand(FilterAndSortProjects);
+        }
+
+        private void LoadData()
+        {
+            Projects = new ObservableCollection<Project>(_projectService.GetAllProjects());
+            Employees = new ObservableCollection<Employee>(_employeeService.GetAllEmployees());
         }
 
         private void OpenAddProjectWizard()
@@ -67,41 +71,36 @@ namespace ProjectManagementApp.UI.ViewModels
             _windowService.ShowAddEmployeeWindow(OnEmployeeAdded);
         }
 
-        private void EditProject(object parameter)
+        private void EditProject(Project project)
         {
-            var project = parameter as Project;
             if (project != null)
             {
                 _windowService.ShowEditProjectWindow(project, OnProjectUpdated);
             }
         }
 
-        private void EditEmployee(object parameter)
+        private void EditEmployee(Employee employee)
         {
-            var employee = parameter as Employee;
             if (employee != null)
             {
-                _windowService.ShowEditEmployeeWindow(employee, OnEmployeesUpdated);
+                _windowService.ShowEditEmployeeWindow(employee, OnEmployeeUpdated);
             }
         }
-
-        private void DeleteEmployee(object parameter)
+        private void DeleteEmployee(Employee employee)
         {
-            var employee = parameter as Employee;
             if (employee != null)
             {
-                Employees.Remove(employee);
                 _employeeService.DeleteEmployee(employee.Id);
+                Employees.Remove(employee);
             }
         }
 
-        private void DeleteProject(object parameter)
+        private void DeleteProject(Project project)
         {
-            var project = parameter as Project;
             if (project != null)
             {
-                Projects.Remove(project);
                 _projectService.DeleteProject(project.Id);
+                Projects.Remove(project);
             }
         }
 
@@ -113,69 +112,56 @@ namespace ProjectManagementApp.UI.ViewModels
             if (existingProject != null)
             {
                 int index = Projects.IndexOf(existingProject);
-                Projects.RemoveAt(index); 
-                Projects.Insert(index, updatedProject);
+                Projects[index] = updatedProject;
             }
-
-            //_projectService.UpdateProject(updatedProject);
         }
 
-        private void OnEmployeesUpdated(Employee updatedEmployee)
+        private void OnEmployeeUpdated(Employee updatedEmployee)
         {
             if (updatedEmployee == null) return;
 
-            var existingEmployee = Employees.FirstOrDefault(p => p.Id == updatedEmployee.Id);
+            var existingEmployee = Employees.FirstOrDefault(e => e.Id == updatedEmployee.Id);
             if (existingEmployee != null)
             {
-                int index = Employees.IndexOf(existingEmployee);
+                existingEmployee.FirstName = updatedEmployee.FirstName;
+                existingEmployee.LastName = updatedEmployee.LastName;
+                existingEmployee.Email = updatedEmployee.Email;
+
+                var index = Employees.IndexOf(existingEmployee);
                 Employees.RemoveAt(index);
                 Employees.Insert(index, existingEmployee);
             }
-
-            //_employeeService.UpdateEmployee(updatedEmployee.Id, updatedEmployee);
         }
 
         private void OnProjectAdded(Project newProject)
         {
             if (newProject == null) return;
-
             Projects.Add(newProject);
-            OnPropertyChanged(nameof(Projects));
         }
 
         private void OnEmployeeAdded(Employee newEmployee)
         {
             if (newEmployee == null) return;
-
             Employees.Add(newEmployee);
-            OnPropertyChanged(nameof(Employees));
         }
 
         private void FilterAndSortProjects()
         {
-            IEnumerable<Project> filteredProjects = _allProjects;
-
-            //if (FilterStartDate.HasValue && FilterEndDate.HasValue)
-            //{
-            //    filteredProjects = _projectService.FilterProjectsByDateRange(FilterStartDate.Value, FilterEndDate.Value);
-            //}
-
-            if (!string.IsNullOrEmpty(SelectedPriority))
+            var filterOptions = new ProjectFilterOptions
             {
-                int priorityValue = SelectedPriority switch
+                StartDate = FilterStartDate,
+                EndDate = FilterEndDate,
+                Priority = SelectedPriority switch
                 {
-                    "Low" => 1,
-                    "Medium" => 2,
-                    "High" => 3,
-                    _ => 0
-                };
+                    "Low" => ProjectManagement.DAL.Enum.Priority.Low,
+                    "Medium" => ProjectManagement.DAL.Enum.Priority.Medium,
+                    "High" => ProjectManagement.DAL.Enum.Priority.High,
+                    _ => null
+                },
+                ProjectName = SearchQuery
+            };
 
-                //if (priorityValue > 0)
-                //{
-                //    filteredProjects = _projectService.FilterProjectsByPriority(priorityValue);
-                //}
-            }
-
+            var filteredProjects = _projectService.FilterAndSortProjects(filterOptions);
             Projects.Clear();
             foreach (var project in filteredProjects)
             {
@@ -188,13 +174,13 @@ namespace ProjectManagementApp.UI.ViewModels
             FilterStartDate = null;
             FilterEndDate = null;
             SelectedPriority = null;
+            SearchQuery = null;
 
             Projects.Clear();
-            foreach (var project in _allProjects)
+            foreach (var project in _projectService.GetAllProjects())
             {
                 Projects.Add(project);
             }
         }
     }
 }
-
