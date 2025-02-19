@@ -14,7 +14,7 @@ namespace ProjectManagement.DAL.DataAccess
         {
             if (!options.IsConfigured) 
             {
-                options.UseNpgsql("Server=localhost;Database=ProjectApi;Port=5430;User Id=postgres;Password=1123581321;Trust Server Certificate=true;");
+                options.UseNpgsql("Server=db;Database=ProjectApi;Port=5430;User Id=postgres;Password=1123581321;Trust Server Certificate=true;");
             }
         }
 

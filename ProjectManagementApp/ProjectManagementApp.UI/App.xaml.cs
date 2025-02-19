@@ -50,6 +50,12 @@ namespace ProjectManagementApp.UI
         {
             base.OnStartup(e);
 
+            using (var scope = ServiceProvider.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<WebApiDbContext>();
+                dbContext.Database.Migrate(); 
+            }
+
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
         }
